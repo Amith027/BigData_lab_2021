@@ -1,0 +1,112 @@
+Hadoop Basic Commands 
+
+1. Create a directory named by your name.
+-->$ hadoop fs -mkdir /amith
+   $ hadoop fs -ls
+Found 1 items
+drwxr-xr-x   - hdoop supergroup          0 2021-05-04 19:19 /amith
+
+
+2. Add two empty files into it.
+-->$ hadoop fs -touchz /amith/file1.txt
+   $ hadoop fs -touchz /amith/file2.txt
+   $ hadoop fs -ls /amith
+
+Found 2 items
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 19:24 /amith/file1.txt
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 19:24 /amith/file2.txt
+
+
+3. List all the files in the directory that you have created.
+-->$ hadoop fs -ls /amith
+Found 2 items
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 19:24 /amith/file1.txt
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 19:24 /amith/file2.txt
+ 
+
+4. Create one more directory with your usnand move it inside your previously created directory with your name.
+-->$ hadoop fs -mkdir /1nt18is027
+   $ hadoop fs -mv /1nt18is027 /amith
+   $ hadoop fs -ls /amith
+Found 3 items
+drwxr-xr-x   - hdoop supergroup          0 2021-05-04 19:29 /amith/1nt18is027
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 19:24 /amith/file1.txt
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 19:24 /amith/file2.txt
+
+
+5. Create a file in your local system by name_usn.txt and add the contents as "Syntax to list ls command is hadoop fs -ls".
+-->$ nano amith_1nt18is027.txt
+
+
+6. Put the file name_usn.txt in your hdfs directory named by your usn.
+-->$ hadoop fs -moveFromLocal amith_1nt18is027.txt /amith/1nt18is027/amith_1nt18is027.txt
+   $ hadoop fs -ls /amith/1nt18is027
+Found 1 items
+-rw-r--r--   1 hdoop supergroup         44 2021-05-04 19:55 /amith/1nt18is027/amith_1nt18is027.txt
+
+
+7. Put empty file from hdfs to local file system.
+-->$ hadoop fs -touchz empty_file.txt
+   $ hadoop fs -ls /
+Found 2 items
+drwxr-xr-x   - hdoop supergroup          0 2021-05-04 19:31 /amith
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 20:10 /empty_file.txt
+
+   $ hadoop fs -copyToLocal /empty_file.txt /home/hdoop/empty_file.txt
+   $ ls
+dfsdata  empty_file.txt  hadoop-3.2.1  hadoop-3.2.1.tar.gz  tmpdata
+
+
+8. Use mv command to move files from local file system and hdfs file system.
+-->$ hadoop fs -ls /amith
+Found 4 items
+drwxr-xr-x   - hdoop supergroup          0 2021-05-04 20:05 /amith/1nt18is027
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 20:34 /amith/f1.txt
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 19:24 /amith/file1.txt
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 19:24 /amith/file2.txt
+
+   $ hadoop fs -ls /kumar
+Found 1 items
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 20:35 /kumar/temp_file.txt
+
+   $ hadoop fs -mv /amith/f1.txt /kumar
+   $ hadoop fs -ls /kumar
+Found 2 items
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 20:34 /kumar/f1.txt
+-rw-r--r--   1 hdoop supergroup          0 2021-05-04 20:35 /kumar/temp_file.txt
+
+
+9. Experimnet of cp command
+-->$ hadoop fs -cat /amith/1nt18is027/amith_1nt18is027.txt
+Syntax to list ls command is hadoop fs -ls.
+   $ hadoop fs -cp /amith/1nt18is027/amith_1nt18is027.txt /kumar/copy_amith.txt
+   $ hadoop fs -cat /kumar/copy_amith.txt
+Syntax to list ls command is hadoop fs -ls.
+
+
+10. Display the total size of all the files in name directory.
+-->$ hadoop fs -du -s /amith
+88  88  /amith
+
+
+11. Display each file size in usn directory
+-->$ hadoop fs -du /amith/1nt18is027
+44  44  /amith/1nt18is027/1nt18is027_amith.txt
+44  44  /amith/1nt18is027/amith_1nt18is027.txt
+
+
+12. Use stat command on name and usn directories.
+-->$ hadoop fs -stat /amith
+2021-05-04 15:07:25
+   $ hadoop fs -stat /amith/1nt18is027
+2021-05-04 14:35:51
+
+
+13. Illustrate the use of append command.
+-->$ hadoop fs -cat hello.txt
+hello
+   $ hadoop fs -cat there.txt
+ there!!
+   $ hadoop fs -appendToFile hello.txt there.txt hello_there.txt
+   $ hadoop fs -cat hello_there.txt
+hello there!!
